@@ -1,10 +1,13 @@
-import NxWelcome from './nx-welcome';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Todos from './pages/todos';
+
+const queryClient = new QueryClient();
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="client" />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Todos />
+    </QueryClientProvider>
   );
 }
 
