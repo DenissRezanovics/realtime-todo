@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@todo/dto": ["dto/src/index.ts"],
+      "@todo/shared": ["shared/src/index.ts"],
+      "@todo/types": ["types/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
