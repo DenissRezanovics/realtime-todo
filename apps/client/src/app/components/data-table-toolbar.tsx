@@ -4,6 +4,7 @@ import {PlusCircle, X} from "lucide-react"
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { DataTableMeta } from './data-table';
 
 
 interface DataTableToolbarProps<TData> {
@@ -40,7 +41,7 @@ export function DataTableToolbar<TData>({
                 )}
                 <Button
                     variant="default"
-                    onClick={() => table.options.meta?.addRow()}
+                    onClick={() => (table.options.meta as DataTableMeta).addRow()}
                     className="h-8 px-2 lg:px-3"
                 >
                     Add

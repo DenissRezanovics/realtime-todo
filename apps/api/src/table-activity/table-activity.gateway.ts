@@ -10,35 +10,34 @@ import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { TableActivityDto } from '../dto/table-activity.dto';
 import { CursorActivityDto } from '../dto/cursor-activity.dto';
+import { Events } from '@todo/shared';
 
 @WebSocketGateway(80, { cors: { origin: "*" } })
-export class TableActivityGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class TableActivityGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(TableActivityGateway.name);
 
   @WebSocketServer() io: Server;
 
-  handleConnection(client: any, ...args: any[]) {
+  public handleConnection(client: Socket) {
     const { sockets } = this.io.sockets;
 
     this.logger.log(`Client id: ${client.id} connected`);
     this.logger.debug(`Number of connected clients: ${sockets.size}`);
   }
-  afterInit(server: any) {
-    this.logger.log("Initialized");
-  }
-  handleDisconnect(client: any) {
+
+  public handleDisconnect(client: Socket) {
     this.logger.log(`Cliend id:${client.id} disconnected`);
   }
 
-  @SubscribeMessage("todo")
-  handleTodo(@MessageBody() todo: TableActivityDto, @ConnectedSocket() client: Socket) {
+  @SubscribeMessage(Events.TODO)
+  public handleTodo(@MessageBody() todo: TableActivityDto, @ConnectedSocket() client: Socket) {
     this.logger.log("Incoming todo", todo)
-    client.broadcast.emit("todo", todo)
+    client.broadcast.emit(Events.TODO, todo)
   }
 
-  @SubscribeMessage("cursor")
-  handleCursor(@MessageBody() todo: CursorActivityDto, @ConnectedSocket() client: Socket) {
+  @SubscribeMessage(Events.CURSOR)
+  public handleCursor(@MessageBody() todo: CursorActivityDto, @ConnectedSocket() client: Socket) {
     this.logger.log("Incoming cursor", todo)
-    client.broadcast.emit("cursor", todo)
+    client.broadcast.emit(Events.CURSOR, todo)
   }
 }

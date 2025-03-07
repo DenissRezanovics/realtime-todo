@@ -21,4 +21,11 @@ export class TodoService {
     // @ts-ignore
     await this.todoRepository.upsert(todoDto)
   }
+
+  public async deleteTodo(id: string) {
+    this.logger.log("Deleting todo", { id })
+    await this.todoRepository.destroy({
+      where: { id },
+    });
+  }
 }

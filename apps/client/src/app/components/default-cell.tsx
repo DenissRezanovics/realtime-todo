@@ -1,12 +1,19 @@
 import * as React from 'react';
 import type { CellContext } from '@tanstack/react-table';
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import getCaretCoordinates from 'textarea-caret';
 import { TableActivityContext } from '../context/table-activity';
 import { CursorActivityContext } from '../context/cursor-activity';
 import { CursorActivity, TableActivity, Todo } from '@todo/shared';
 import { socket } from '../socket';
 import { Input } from './ui/input';
+import { DataTableMeta } from './data-table';
 
 export const DefaultCell: React.FC<{
   cellContext: CellContext<Todo, unknown>;
@@ -46,8 +53,10 @@ export const DefaultCell: React.FC<{
       isActive: false,
     };
     socket.emit('todo', tableActivity);
-    // @ts-ignore
-    table.options.meta?.updateRow(index, id, value);
+
+    if (value !== initialValue) {
+      (table.options.meta as DataTableMeta).updateRow(index, id, value);
+    }
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

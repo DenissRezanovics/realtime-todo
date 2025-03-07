@@ -3,7 +3,7 @@ import {DataTable} from "../components/data-table";
 import {columns} from "../components/columns";
 import { useEffect, useState } from 'react';
 import { socket } from '../socket';
-import { CursorActivity, TableActivity, Todo } from '@todo/shared';
+import { CursorActivity, Events, TableActivity, Todo } from '@todo/shared';
 import { TableActivityContext } from '../context/table-activity';
 import { CursorActivityContext } from '../context/cursor-activity';
 import { fetchTodos } from '../requests/fetch-todos';
@@ -22,12 +22,12 @@ export default function Todos() {
         function onCursorEvent(cursor: CursorActivity) {
             setCursorActivityEvents(previous => [cursor, ...previous]);
         }
-        socket.on('todo', onTableActivityEvent);
-        socket.on('cursor', onCursorEvent);
+        socket.on(Events.TODO, onTableActivityEvent);
+        socket.on(Events.CURSOR, onCursorEvent);
 
         return () => {
-            socket.off('todo', onTableActivityEvent);
-            socket.off('cursor', onCursorEvent);
+            socket.off(Events.TODO, onTableActivityEvent);
+            socket.off(Events.CURSOR, onCursorEvent);
         };
     }, []);
 

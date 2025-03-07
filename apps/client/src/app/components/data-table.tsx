@@ -29,6 +29,10 @@ import { Todo } from '@todo/shared';
 import { addTodo } from '../requests/add-todo';
 import { emptyTodo, QUERY_KEY } from '../constants';
 
+export interface DataTableMeta {
+  updateRow: (rowIndex: number, columnId: string, value: string) => void;
+  addRow: () => void;
+}
 interface DataTableProps {
     columns: ColumnDef<Todo>[]
     data: Todo[]
@@ -54,7 +58,7 @@ export const DataTable: FC<DataTableProps> = ({
             queryClient.setQueryData([QUERY_KEY], (oldTodos: Todo[] = []) => [...oldTodos, newTodo]);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: QUERY_KEY}); // Refetch data
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY]}); // Refetch data
         },
     });
 
@@ -84,7 +88,7 @@ export const DataTable: FC<DataTableProps> = ({
             addRow: () => {
                 setData((oldTodo) => [...oldTodo, emptyTodo]);
             },
-        },
+        } satisfies DataTableMeta,
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
