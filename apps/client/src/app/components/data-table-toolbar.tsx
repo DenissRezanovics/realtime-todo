@@ -1,12 +1,10 @@
+import * as React from "react";
 import type {Table} from "@tanstack/react-table";
 import {PlusCircle, X} from "lucide-react"
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import * as React from "react";
-import type {Todo} from "~/data/schema";
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
@@ -18,17 +16,8 @@ export function DataTableToolbar<TData>({
                                             table,
                                         }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const queryClient = useQueryClient();
 
-    const addEmptyRow = () => {
-        console.log("add empty row");
-        queryClient.setQueryData(["todos"], (oldTodos: Todo[]): Todo[] => [
-            { title: "", description: "" },
-            ...oldTodos,
-        ]);
-    };
-
-    return (
+  return (
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
                 <Input

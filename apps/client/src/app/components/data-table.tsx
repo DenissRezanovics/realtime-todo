@@ -23,33 +23,21 @@ import {
     TableRow,
 } from "./ui/table"
 import {DataTableToolbar} from "./data-table-toolbar";
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Todo } from '@todo/shared';
-import { API_URL } from '../constants';
+import { addTodo } from '../requests/add-todo';
+import { emptyTodo, QUERY_KEY } from '../constants';
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface DataTableProps {
+    columns: ColumnDef<Todo>[]
+    data: Todo[]
 }
 
-const addTodo = async (newTodo: Todo) => {
-    const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newTodo)
-    });
-
-    return res.json();
-}
-
-export function DataTable<TData, TValue>({
+export const DataTable: FC<DataTableProps> = ({
                                              columns,
                                              data: defaultData,
-                                         }: DataTableProps<TData, TValue>) {
+                                         }) => {
     const [data, setData] = useState(() => [...defaultData]);
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
@@ -63,10 +51,10 @@ export function DataTable<TData, TValue>({
         mutationFn: addTodo,
         onMutate: async (newTodo) => {
             // Optimistic Update: Update cache before server response
-            queryClient.setQueryData(["todos"], (oldTodos: Todo[] = []) => [...oldTodos, newTodo]);
+            queryClient.setQueryData([QUERY_KEY], (oldTodos: Todo[] = []) => [...oldTodos, newTodo]);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: "todos"}); // Refetch data
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY}); // Refetch data
         },
     });
 
@@ -94,12 +82,7 @@ export function DataTable<TData, TValue>({
                 );
             },
             addRow: () => {
-                const newRow: Todo = {
-                    markAsDone: false,
-                    title: "",
-                    description: "",
-                };
-                setData((oldTodo) => [...oldTodo, newRow]);
+                setData((oldTodo) => [...oldTodo, emptyTodo]);
             },
         },
         enableRowSelection: true,
