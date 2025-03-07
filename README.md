@@ -43,7 +43,7 @@ A real-time Todo application built using **Nx**, **React**, **NestJS**, **Postgr
 
 3. Start the frontend:
    ```sh
-   npn run startClient
+   npm run startClient
    ```
 4. Open your browser and visit `http://localhost:4200`
 
