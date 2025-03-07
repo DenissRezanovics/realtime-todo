@@ -24,14 +24,16 @@ import {
 } from './ui/table';
 import { DataTableToolbar } from './data-table-toolbar';
 import { FC, useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Todo } from '@todo/shared';
-import { addTodo } from '../requests/add-todo';
-import { emptyTodo, QUERY_KEY } from '../constants';
+import { emptyTodo} from '../constants';
+import { useDeleteTodo } from '../hooks/use-delete-todo';
+import { useAddTodo } from '../hooks/use-add-todo';
 
 export interface DataTableMeta {
   updateRow: (rowIndex: number, columnId: string, value: string) => void;
   addRow: () => void;
+  deleteRow: (id: number) => void;
 }
 
 interface DataTableProps {
@@ -52,19 +54,8 @@ export const DataTable: FC<DataTableProps> = ({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const queryClient = useQueryClient();
-  const addTodoMutation = useMutation({
-    mutationFn: addTodo,
-    onMutate: async (newTodo) => {
-      // Optimistic Update: Update cache before server response
-      queryClient.setQueryData([QUERY_KEY], (oldTodos: Todo[] = []) => [
-        ...oldTodos,
-        newTodo,
-      ]);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }); // Refetch data
-    },
-  });
+  const addTodoMutation = useAddTodo(queryClient)
+  const deleteTodoMutation = useDeleteTodo(queryClient)
 
   const table = useReactTable({
     data,
@@ -91,6 +82,11 @@ export const DataTable: FC<DataTableProps> = ({
       },
       addRow: () => {
         setData((oldTodo) => [...oldTodo, emptyTodo]);
+      },
+      deleteRow: (id: number) => {
+        setData((oldTodo) => oldTodo.filter((t) => t.id !== id));
+        deleteTodoMutation.mutate(id);
+
       },
     } satisfies DataTableMeta,
     enableRowSelection: true,

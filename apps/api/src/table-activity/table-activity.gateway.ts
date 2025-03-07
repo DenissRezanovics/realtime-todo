@@ -14,7 +14,7 @@ import { TableActivityDto } from '../dto/table-activity.dto';
 import { CursorActivityDto } from '../dto/cursor-activity.dto';
 import { Events } from '@todo/shared';
 
-@WebSocketGateway(80, { cors: { origin: '*' } })
+@WebSocketGateway({ cors: { origin: '*' } })
 export class TableActivityGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {

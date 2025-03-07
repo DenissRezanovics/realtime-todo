@@ -1,4 +1,4 @@
-import type { Row } from '@tanstack/react-table';
+import type { CellContext, Row } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 
 import { Button } from './ui/button';
@@ -9,14 +9,21 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { Todo } from '@todo/shared';
+import { DataTableMeta } from './data-table';
 
-interface DataTableRowActionsProps<TData> {
-  row: Row<TData>;
+interface DataTableRowActionsProps {
+  cellContext: CellContext<Todo, unknown>;
 }
 
-export function DataTableRowActions<TData>({
-  row,
-}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions({
+  cellContext,
+}: DataTableRowActionsProps) {
+  const onDelete = (): void => {
+    const {id} = cellContext.row.original;
+    const meta = cellContext.table.options.meta as DataTableMeta
+    meta.deleteRow(id)
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +36,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={onDelete}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

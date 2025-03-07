@@ -41,7 +41,7 @@ export const columns: ColumnDef<Todo>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: (cellContext) => <DataTableRowActions cellContext={cellContext} />,
     size: 10,
   },
 ];

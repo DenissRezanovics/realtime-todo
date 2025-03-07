@@ -17,7 +17,7 @@ export class TodoController {
     await this.todoService.createTodo(todo);
   }
 
-  @Delete()
+  @Delete(":id")
   public async deleteTodo(@Param('id') id: string): Promise<void> {
     await this.todoService.deleteTodo(id);
   }
