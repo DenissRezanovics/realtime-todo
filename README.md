@@ -17,13 +17,7 @@ A real-time Todo application built using **Nx**, **React**, **NestJS**, **Postgr
 ## Getting Started
 ### Installation
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo/realtime-todo-app.git
-   cd realtime-todo-app
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
    ```sh
    npm install
    ```
