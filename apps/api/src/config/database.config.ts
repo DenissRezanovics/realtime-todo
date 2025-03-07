@@ -3,13 +3,10 @@ import { Sequelize } from 'sequelize-typescript';
 import { Todo } from '../todo/todo.entity';
 
 export default registerAs("database", async (): Promise<Sequelize> => {
-  const sequelize = new Sequelize({
+  const { DATABASE_URL } = process.env;
+  console.log("Creating database", {DATABASE_URL})
+  const sequelize = new Sequelize(DATABASE_URL, {
     dialect: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'root',
-    password: 'root',
-    database: 'todos',
   });
   sequelize.addModels([Todo]);
   await sequelize.sync();
