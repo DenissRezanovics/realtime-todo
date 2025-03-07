@@ -18,8 +18,12 @@ export class TodoService {
 
   public async createTodo(todoDto: TodoDto) {
     this.logger.log('Creating todo', { todoDto });
-    // @ts-ignore
-    await this.todoRepository.upsert(todoDto);
+    await this.todoRepository.upsert({
+      ...(todoDto.id && { id: todoDto.id }),
+      title: todoDto.title,
+      description: todoDto.description,
+      markAsDone: todoDto.markAsDone
+    });
   }
 
   public async deleteTodo(id: string) {

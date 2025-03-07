@@ -3,14 +3,10 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
-  type VisibilityState,
+  getSortedRowModel,
   flexRender,
   getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -31,7 +27,7 @@ import { useDeleteTodo } from '../hooks/use-delete-todo';
 import { useAddTodo } from '../hooks/use-add-todo';
 
 export interface DataTableMeta {
-  updateRow: (rowIndex: number, columnId: string, value: string) => void;
+  updateRow: (rowIndex: number, columnId: string, value: unknown) => void;
   addRow: () => void;
   deleteRow: (id: number) => void;
 }
@@ -47,8 +43,6 @@ export const DataTable: FC<DataTableProps> = ({
 }) => {
   const [data, setData] = useState(() => [...defaultData]);
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -61,13 +55,12 @@ export const DataTable: FC<DataTableProps> = ({
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
       rowSelection,
+      sorting,
       columnFilters,
     },
     meta: {
-      updateRow: (rowIndex: number, columnId: string, value: string) => {
+      updateRow: (rowIndex, columnId, value) => {
         setData((old) =>
           old.map((row, index) => {
             if (index === rowIndex) {
@@ -81,7 +74,7 @@ export const DataTable: FC<DataTableProps> = ({
         );
       },
       addRow: () => {
-        setData((oldTodo) => [...oldTodo, emptyTodo]);
+        setData((oldTodo) => [...oldTodo, emptyTodo as Todo]);
       },
       deleteRow: (id: number) => {
         setData((oldTodo) => oldTodo.filter((t) => t.id !== id));
@@ -93,13 +86,9 @@ export const DataTable: FC<DataTableProps> = ({
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
     onStateChange: () => {
       const [selectedRowIndex] = Object.keys(rowSelection);
       if (selectedRowIndex) {

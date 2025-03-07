@@ -5,11 +5,7 @@ import { Todo } from '@todo/shared';
 export const deleteTodo = async (id: number) => {
   const params = new URLSearchParams({ id: String(id) }).toString();
   const res = await fetch(API_URL.concat("?", params), {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
+    method: 'DELETE'
   });
 
   return res.json();

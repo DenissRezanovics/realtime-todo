@@ -1,26 +1,11 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { DataTableRowActions } from './data-table-row-actions';
-import { Checkbox } from './ui/checkbox';
 import { DefaultCell } from './default-cell';
 import { Todo } from '@todo/shared';
+import { CheckboxCell } from './checkbox-cell';
 
 export const columns: ColumnDef<Todo>[] = [
-  {
-    id: 'taskDone',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: boolean) => row.toggleSelected(Boolean(value))}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-    size: 10,
-  },
   {
     accessorKey: 'title',
     header: ({ column }) => (
@@ -38,6 +23,13 @@ export const columns: ColumnDef<Todo>[] = [
     ),
     cell: (cellContext) => <DefaultCell cellContext={cellContext} />,
     size: 1500,
+  },
+  {
+    accessorKey: 'markAsDone',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Done" />,
+    cell: (cellContext) => <CheckboxCell cellContext={cellContext} />,
+    size: 10,
+    enableSorting: true,
   },
   {
     id: 'actions',
