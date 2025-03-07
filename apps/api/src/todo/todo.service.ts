@@ -5,11 +5,11 @@ import { TodoDto } from '../dto/todo.dto';
 
 @Injectable()
 export class TodoService {
-  private readonly logger = new Logger(TodoService.name)
+  private readonly logger = new Logger(TodoService.name);
 
   constructor(
     @Inject(TODO_REPOSITORY)
-    private todoRepository: typeof Todo
+    private todoRepository: typeof Todo,
   ) {}
 
   public async getTodos() {
@@ -17,13 +17,13 @@ export class TodoService {
   }
 
   public async createTodo(todoDto: TodoDto) {
-    this.logger.log("Creating todo", {todoDto})
+    this.logger.log('Creating todo', { todoDto });
     // @ts-ignore
-    await this.todoRepository.upsert(todoDto)
+    await this.todoRepository.upsert(todoDto);
   }
 
   public async deleteTodo(id: string) {
-    this.logger.log("Deleting todo", { id })
+    this.logger.log('Deleting todo', { id });
     await this.todoRepository.destroy({
       where: { id },
     });

@@ -1,12 +1,6 @@
 import * as React from 'react';
 import type { CellContext } from '@tanstack/react-table';
-import {
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import getCaretCoordinates from 'textarea-caret';
 import { TableActivityContext } from '../context/table-activity';
 import { CursorActivityContext } from '../context/cursor-activity';

@@ -6,9 +6,12 @@ import { Todo } from './todo.entity';
 
 @Module({
   controllers: [TodoController],
-  providers: [TodoService, {
-    provide: TODO_REPOSITORY,
-    useValue: Todo,
-  }]
+  providers: [
+    TodoService,
+    {
+      provide: TODO_REPOSITORY,
+      useValue: Todo,
+    },
+  ],
 })
 export class TodoModule {}
