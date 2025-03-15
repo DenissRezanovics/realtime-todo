@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
-import { TODO_REPOSITORY } from '../constants/database.constants';
+import { TODO_REPOSITORY } from '../../constants/database.constants';
 import { Todo } from './todo.entity';
 
 @Module({

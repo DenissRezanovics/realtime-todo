@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Todo } from './todo.entity';
-import { TODO_REPOSITORY } from '../constants/database.constants';
-import { TodoDto } from '../dto/todo.dto';
+import { TODO_REPOSITORY } from '../../constants/database.constants';
+import { TodoDto } from '../../dto/todo.dto';
 
 @Injectable()
 export class TodoService {

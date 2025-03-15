@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import databaseConfig from '../config/database.config';
-import { TodoModule } from '../todo/todo.module';
-import { TableActivityModule } from '../table-activity/table-activity.module';
+import { TodoModule } from '../core/todo/todo.module';
+import { TableActivityModule } from '../core/table-activity/table-activity.module';
 import { DatabaseModule } from '../database/database.module';
 
 @Module({
@@ -18,7 +16,7 @@ import { DatabaseModule } from '../database/database.module';
       load: [databaseConfig],
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@todo/shared": ["shared/src/index.ts"],
+      "@todo/shared": ["shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

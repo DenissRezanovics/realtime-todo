@@ -10,8 +10,8 @@ import {
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { TableActivityDto } from '../dto/table-activity.dto';
-import { CursorActivityDto } from '../dto/cursor-activity.dto';
+import { TableActivityDto } from '../../dto/table-activity.dto';
+import { CursorActivityDto } from '../../dto/cursor-activity.dto';
 import { Events } from '@todo/shared';
 
 @WebSocketGateway({ cors: { origin: '*' } })
